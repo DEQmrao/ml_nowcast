@@ -1,5 +1,14 @@
 library(randomForest)
 library(caret)
+library(dplyr)
+library(lubridate)
+library(zeallot)
+library(hashmap)    ## for named lists
+
+
+stations <- list(410510080, 410130100, 410250003, 410330114, 410370001)
+stn_name <- hashmap(c(410510080, 410130100, 410250003, 410330114, 410370001), c("sel", "pdp", "bws", "gpp", "lcm"))
+
 
 ## read in the input data files
 c(sel_multi, pdp_multi, bws_multi, gpp_multi, lcm_multi) %<-% lapply(stations, function(stn) {
