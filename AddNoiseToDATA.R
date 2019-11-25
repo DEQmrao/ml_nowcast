@@ -1,4 +1,4 @@
-
+##test##
 #get data
 root <- "C:/Users/afellow/Desktop/RworkAQM/nowcast/ml_nowcast/"
 site <- "sel_multi"
