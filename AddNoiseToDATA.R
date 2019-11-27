@@ -1,31 +1,42 @@
-##test##
 #get data
-root <- "C:/Users/afellow/Desktop/RworkAQM/nowcast/ml_nowcast/"
+root <- "C:/Users/afellow/Desktop/RworkAQM/GITWORK/ml_nowcast/"
 site <- "sel_multi"
 data_multi <- read.csv(paste0(root, "/inputs/", site, ".csv"), stringsAsFactors = FALSE)
-
-#scale noise
-scaleAMT <- 0.05
 
 #set seed
 set.seed(131)
 
+#function
+lagDrift <- function(x, k) {
+  if (k>0) {
+    return (c(rep(x[1], k), x)[1 : length(x)] );
+  }
+  else {
+    return (c(x[(-k+1) : length(x)], rep(x[length(x)], -k)));
+  }
+}
+
+#scale noise
+scaleAMT <- 20
+
 #add noise to data - use standard deviation of input
 ##pm
 jitterPMamt <- sd(data_multi$pm25_0, na.rm = TRUE) * scaleAMT
-data_multi$pm25_0 <- jitter(data_multi$pm25_0, factor=1, amount=jitterPMamt)
-data_multi$pm25_1 <- jitter(data_multi$pm25_1, factor=1, amount=jitterPMamt)
-data_multi$pm25_2 <- jitter(data_multi$pm25_2, factor=1, amount=jitterPMamt)
-data_multi$pm25_3 <- jitter(data_multi$pm25_3, factor=1, amount=jitterPMamt)
-data_multi$pm25_4 <- jitter(data_multi$pm25_4, factor=1, amount=jitterPMamt)
-data_multi$pm25_5 <- jitter(data_multi$pm25_5, factor=1, amount=jitterPMamt)
-data_multi$pm25_6 <- jitter(data_multi$pm25_6, factor=1, amount=jitterPMamt)
-data_multi$pm25_7 <- jitter(data_multi$pm25_7, factor=1, amount=jitterPMamt)
-data_multi$pm25_8 <- jitter(data_multi$pm25_8, factor=1, amount=jitterPMamt)
-data_multi$pm25_9 <- jitter(data_multi$pm25_9, factor=1, amount=jitterPMamt)
-data_multi$pm25_10 <- jitter(data_multi$pm25_10, factor=1, amount=jitterPMamt)
-data_multi$pm25_11 <- jitter(data_multi$pm25_11, factor=1, amount=jitterPMamt)
-data_multi$pm25_12 <- jitter(data_multi$pm25_12, factor=1, amount=jitterPMamt)
+JitterPM25_1 <- jitter(data_multi$pm25_1, factor=1, amount=jitterPMamt)
+JitterOffset <- JitterPM25_1 - data_multi$pm25_1
+
+data_multi$pm25_1  <- data_multi$pm25_1 + lagDrift(JitterOffset,0)
+data_multi$pm25_2  <- data_multi$pm25_2 + lagDrift(JitterOffset,1)
+data_multi$pm25_3  <- data_multi$pm25_3 + lagDrift(JitterOffset,2)
+data_multi$pm25_4  <- data_multi$pm25_4 + lagDrift(JitterOffset,3)
+data_multi$pm25_5  <- data_multi$pm25_5 + lagDrift(JitterOffset,4)
+data_multi$pm25_6  <- data_multi$pm25_6 + lagDrift(JitterOffset,5)
+data_multi$pm25_7  <- data_multi$pm25_7 + lagDrift(JitterOffset,6)
+data_multi$pm25_8  <- data_multi$pm25_8 + lagDrift(JitterOffset,7)
+data_multi$pm25_9  <- data_multi$pm25_9 + lagDrift(JitterOffset,8)
+data_multi$pm25_10 <- data_multi$pm25_10 + lagDrift(JitterOffset,9)
+data_multi$pm25_11 <- data_multi$pm25_11 + lagDrift(JitterOffset,10)
+data_multi$pm25_12 <- data_multi$pm25_12 + lagDrift(JitterOffset,11)
 
 ##met
 jitterPRamt <- sd(data_multi$pr, na.rm = TRUE) * scaleAMT

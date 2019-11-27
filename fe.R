@@ -87,6 +87,7 @@ regular_df <- function(df, ...) {
   df$min <- apply(df[,pmi:(pmi+11)], 1, min)
   df$max <- apply(df[,pmi:(pmi+11)], 1, max)
   df$fac <- 1 - (df$max - df$min)/df$max
+  df$fac[df$fac <= 0.5] <- 0.5 #awf 11/26/2019
   df$reff <- (df[,"pm25_1"]*(df$fac^0) + df[,"pm25_2"]*(df$fac^1) + df[,"pm25_3"]*(df$fac^2) + df[,"pm25_4"]*(df$fac^3) + 
                 df[,"pm25_5"]*(df$fac^4) + df[,"pm25_6"]*(df$fac^5) + df[,"pm25_7"]*(df$fac^6) + df[,"pm25_8"]*(df$fac^7) + 
                 df[,"pm25_9"]*(df$fac^8) + df[,"pm25_10"]*(df$fac^9) + df[,"pm25_11"]*(df$fac^10) + df[,"pm25_12"]*(df$fac^11))/
