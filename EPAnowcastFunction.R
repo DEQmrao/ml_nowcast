@@ -88,8 +88,8 @@ names(Drift_nowcast) <- c("dtime", "pm25_0", "sel", "sel.01", "sel.05", "sel.1",
 valn0 <- Drift_nowcast %>% filter(year(dtime) == 2015) 
 dr_nowcast <- apply(valn0[,3:12],2,postResample, obs=valn0$pm25_0)
 
-fle2save <- "inputADDdrift/Drift_nowcast.csv"
-write.csv(Drift_nowcast, file = fle2save, row.names=FALSE)
+#fle2save <- "inputADDdrift/Drift_nowcast.csv"
+#write.csv(Drift_nowcast, file = fle2save, row.names=FALSE)
 
 sel.01n <- read.csv("inputADDnoise/sel_multi_0.01.csv", stringsAsFactors = FALSE)
 sel.05n <- read.csv("inputADDnoise/sel_multi_0.05.csv", stringsAsFactors = FALSE)
@@ -112,5 +112,5 @@ names(Noise_nowcast) <- c("dtime", "pm25_0", "sel", "sel.01", "sel.05", "sel.1",
 valn0 <- Noise_nowcast %>% filter(year(dtime) == 2015) 
 nr_nowcast <- apply(valn0[,3:12],2,postResample, obs=valn0$pm25_0)
 
-fle2save <- "inputADDnoise/Noise_nowcast.csv"
-write.csv(Noise_nowcast, file = fle2save, row.names=FALSE)
+#fle2save <- "inputADDnoise/Noise_nowcast.csv"
+#write.csv(Noise_nowcast, file = fle2save, row.names=FALSE)
