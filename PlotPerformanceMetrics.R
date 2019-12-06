@@ -1,7 +1,7 @@
 
 
 #what do you want to plot? noise or drift
-whatplot <- "noise"
+whatplot <- "drift"
 
 #choose metric w/ RMSE=-1;r2=0,MAE=1
 n <- 0
@@ -60,7 +60,7 @@ if(whatplot=="drift"){
 }
 
 #now make the figure
-png(filename = paste0("C:/Users/afellow/Desktop/RworkAQM/GITWORK/ml_nowcast/figures/Performance_", whatplot, ".png"),
+png(filename = paste0("C:/Users/afellow/Desktop/RworkAQM/GITWORK/ml_nowcast/figures/revision/Performance_", whatplot, ".png"),
     width = 5, height = 5, units = "in", pointsize = 16, res=300)
 
 par(mar=c(3.5,3.5,1,1),
@@ -100,17 +100,19 @@ box(col = 'gray20')
 axis(side = 1, tck = -.03, col = 'gray20', at=c(0,10,20), labels=c("0", "10","20"))
 axis(side = 2, tck = -.03, col = 'gray20', at=c(0,0.25,0.5,0.75,1), labels= c(0,0.25,0.5,0.75,1))
 
-mtext(text="Standard Deviation Increase",side=1,line=2)
+#mtext(text="Standard Deviation Increase",side=1,line=2)
+if(whatplot=="noise"){ mtext(text="Noise (Standard Deviation)",side=1,line=2)}
+if(whatplot=="drift"){ mtext(text="Drift (Standard Deviation)",side=1,line=2)}
 mtext(text="Coef. of Determination",side=2,line=2)
 
-
-legend(7.5,1,c("nowcast","linear regression","random forest","boosted trees", "multilayer perceptron"),
-       col=c("black","gray30","green4","blue4","red4"),
-       pch=c(16,1,1,1,1),
-       pt.cex=1.2,
-       lty=c(1,2,2,2,2),
-       lwd=c(2,2,2,2,2),
-       cex=0.75)
-
+if(whatplot=="noise"){
+  legend(7.5,1,c("nowcast","linear regression","random forest","boosted trees", "multilayer perceptron"),
+         col=c("black","gray30","green4","blue4","red4"),
+         pch=c(16,1,1,1,1),
+         pt.cex=1.2,
+         lty=c(1,2,2,2,2),
+         lwd=c(2,2,2,2,2),
+         cex=0.75)
+}
 
 dev.off()

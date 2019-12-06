@@ -1,6 +1,7 @@
 
 library(dplyr)
 library(lubridate)
+library(ggplot2)
 
 #get predictions
 Noise_nowcast <- read.csv("inputADDnoise/Noise_nowcast.csv", stringsAsFactors=FALSE)
@@ -19,7 +20,6 @@ lmXdrift_pred <- read.csv("predictions/sel_drift_lm.csv", stringsAsFactors=FALSE
 rfXdrift_pred <- read.csv("predictions/sel_drift_ranger.csv", stringsAsFactors=FALSE)
 gbmXdrift_pred <- read.csv("predictions/sel_drift_gbm.csv", stringsAsFactors=FALSE)
 mlpXdrift_pred <- read.csv("predictions/sel_drift_mlp.csv", stringsAsFactors=FALSE)
-
 
 MakeThisFig <- function(x,y,xlab2write,ylab2write,zlab2write,xAXlab,yAXlab){
   
@@ -43,10 +43,11 @@ MakeThisFig <- function(x,y,xlab2write,ylab2write,zlab2write,xAXlab,yAXlab){
   box()
   mtext(zlab2write,side=3,line=0.5,cex=0.8)
   mtext(ylab2write,side=2,line=2.5)
-  mtext(xlab2write,side=1,line=2.5)
+  mtext(xlab2write,side=1,line=3)
 }
 
-  
+pm_ylab = expression("Particulate Matter " ~ (mu ~ g ~ m^{-3}))
+
 png(filename = paste0("C:/Users/afellow/Desktop/RworkAQM/GITWORK/ml_nowcast/figures/RegsModelPerformance.png"),
     width = 10, height = 5, units = "in", pointsize = 16, res=300)
 
@@ -63,7 +64,7 @@ MakeThisFig(mlpXnoise_pred$pm25_0,mlpXnoise_pred$sel5.00,"","","multilayer perce
 
 MakeThisFig(nowXdrift_pred$pm25_0,nowXdrift_pred$sel5,"","Predicted w/ Drift","",c(0,200),c(0,200))
 MakeThisFig(lmXdrift_pred$pm25_0,lmXdrift_pred$sel5.00,"","","",c(0,200),FALSE)
-MakeThisFig(rfXdrift_pred$pm25_0,rfXdrift_pred$sel5.00,"Obs. PM","","",c(0,200),FALSE)
+MakeThisFig(rfXdrift_pred$pm25_0,rfXdrift_pred$sel5.00,pm_ylab,"","",c(0,200),FALSE)
 MakeThisFig(gbmXdrift_pred$pm25_0,gbmXdrift_pred$sel5.00,"","","",c(0,200),FALSE)
 MakeThisFig(mlpXdrift_pred$pm25_0,mlpXdrift_pred$sel5.00,"","","",c(0,200),FALSE)
 
